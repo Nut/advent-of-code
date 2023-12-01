@@ -1,25 +1,20 @@
+import { TOKEN_STRING_MAP } from "./tokenStringMap.const";
+
+export interface Token {
+  type: "Literal";
+  value: number;
+}
+
 export class Day1 {
   public solve(words: string[]): number {
     let result = 0;
 
     for (let i = 0; i < words.length; i++) {
-      let number1 = "0";
-      let number2 = "0";
       const word = words[i];
 
-      for (let j = 0; j < word.length; j++) {
-        if (this.isNumber(word[j])) {
-          number1 = word[j];
-          break;
-        }
-      }
-
-      for (let j = word.length - 1; j >= 0; j--) {
-        if (this.isNumber(word[j])) {
-          number2 = word[j];
-          break;
-        }
-      }
+      const tokens = this.tokeniser(word);
+      const number1 = tokens[0].value;
+      const number2 = tokens[tokens.length - 1].value;
 
       result += Number(`${number1}${number2}`);
     }
@@ -27,7 +22,38 @@ export class Day1 {
     return result;
   }
 
-  private isNumber(value?: string | number): boolean {
-    return value != null && value !== "" && !isNaN(Number(value.toString()));
+  private tokeniser(input: string): Token[] {
+    let currentPosition = 0;
+    const allTokens: Token[] = [];
+
+    while (currentPosition < input.length) {
+      for (const { key, value } of TOKEN_STRING_MAP) {
+        if (!this.lookaheadString(key, input, currentPosition)) {
+          continue;
+        }
+
+        allTokens.push(value);
+      }
+
+      currentPosition++;
+    }
+
+    return allTokens;
+  }
+
+  private lookaheadString(
+    key: string,
+    input: string,
+    currentPosition: number
+  ): boolean {
+    const parts = key.split("");
+
+    for (let i = 0; i < parts.length; i++) {
+      if (input[currentPosition + i] !== parts[i]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
