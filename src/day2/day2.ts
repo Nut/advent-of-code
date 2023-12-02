@@ -7,16 +7,14 @@ interface AllowedConfig {
 type Sets = AllowedConfig[];
 
 export class Day2 {
-  constructor(private allowedConfig: AllowedConfig) {}
-
-  public solve(games: string[]): number {
+  public solvePartOne(games: string[], allowedConfig: AllowedConfig): number {
     let result = 0;
 
     for (const game of games) {
       const gameId = this.getGameId(game);
       const gameSets = this.getSets(game);
 
-      if (this.isGameValid(gameSets)) {
+      if (this.isGameValid(gameSets, allowedConfig)) {
         result += gameId;
       }
     }
@@ -24,10 +22,21 @@ export class Day2 {
     return result;
   }
 
-  private isGameValid(gameSets: Sets): boolean {
+  public solvePartTwo(games: string[]): number {
+    let result = 0;
+
+    for (const game of games) {
+      const gameSets = this.getSets(game);
+      result += this.getMinPowerOfSetOfCubes(gameSets);
+    }
+
+    return result;
+  }
+
+  private isGameValid(gameSets: Sets, allowedConfig: AllowedConfig): boolean {
     for (const gameSet of gameSets) {
       for (const [key, value] of Object.entries(gameSet)) {
-        if (value > this.allowedConfig[key as keyof AllowedConfig]) {
+        if (value > allowedConfig[key as keyof AllowedConfig]) {
           return false;
         }
       }
@@ -52,5 +61,19 @@ export class Day2 {
   private getGameId(game: string): number {
     const matches = game.match(/Game \d+/g);
     return Number(matches?.[0].split(" ")[1]) || 0;
+  }
+
+  private getMinPowerOfSetOfCubes(gameSets: Sets) {
+    let maxBlue = 1;
+    let maxGreen = 1;
+    let maxRed = 1;
+
+    for (const { blue, green, red } of gameSets) {
+      maxBlue = blue > maxBlue ? blue : maxBlue;
+      maxGreen = green > maxGreen ? green : maxGreen;
+      maxRed = red > maxRed ? red : maxRed;
+    }
+
+    return maxBlue * maxGreen * maxRed;
   }
 }
