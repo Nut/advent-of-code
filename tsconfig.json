@@ -12,7 +12,8 @@
     "strict": true,
     "paths": {
       "~/*": ["./src/*"]
-    }
+    },
+    "lib": ["ES2023"]
   },
   "include": ["src", "tests", "src/index.ts"],
   "exclude": ["node_modules"]
