@@ -66,7 +66,7 @@ export class Day4 {
 
   private getMyNumbers(card: string): number[] {
     return card
-      .split(/:|\|/)[2]
+      .split(/[:|]/)[2]
       .trim()
       .replaceAll("  ", " ")
       .split(" ")
@@ -75,7 +75,7 @@ export class Day4 {
 
   private getWinningNumbers(card: string): number[] {
     return card
-      .split(/:|\|/)[1]
+      .split(/[:|]/)[1]
       .trim()
       .replaceAll("  ", " ")
       .split(" ")
