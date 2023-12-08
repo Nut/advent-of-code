@@ -1,10 +1,11 @@
 import { readFileSync } from "fs";
-import {Day5} from "./day5/day5";
+import { Day8 } from "./day8/day8";
 
-const file = readFileSync("./tests/day5/day5_test_input.txt", "utf-8");
+// const file = readFileSync("./tests/day8/day8_test_input_part2.txt", "utf-8");
+const file = readFileSync("./tests/day8/day8_input.txt", "utf-8");
 const input = file.split("\n");
-const day5 = new Day5();
+const day8 = new Day8();
 
-const resultPartOne = day5.solvePartOne(input);
+const result = day8.solvePartTwo(input);
 
-console.log(resultPartOne);
+console.log(result);
